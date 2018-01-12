@@ -1,88 +1,91 @@
-set nocompatible
-filetype off 
+" NeoBundle Scripts-----------------------------
+if has('vim_starting')  
+  set runtimepath+=~/.config/nvim/bundle/neobundle.vim/
+  set runtimepath+=~/.config/nvim/
+endif
 
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
+let neobundle_readme=expand('~/.config/nvim/bundle/neobundle.vim/README.md')
 
-" let Vundle manage Vundle
-" required! 
-Bundle 'gmarik/vundle'
+if !filereadable(neobundle_readme)  
+  echo "Installing NeoBundle..."
+  echo ""
+  silent !mkdir -p ~/.config/nvim/bundle
+  silent !git clone https://github.com/Shougo/neobundle.vim ~/.config/nvim/bundle/neobundle.vim/
+  let g:not_finsh_neobundle = "yes"
+endif
 
-" The bundles you install will be listed here
-Bundle 'scrooloose/nerdtree'
-Bundle 'klen/python-mode'
-Plugin 'bling/vim-airline'
-Plugin 'Valloric/YouCompleteMe'
-Plugin 'Raimondi/delimitMate'
-Plugin 'ctrlpvim/ctrlp.vim'
-Plugin 'ervandew/supertab'
-Plugin 'davidhalter/jedi-vim'
-Plugin 'majutsushi/tagbar'
-Plugin 'SirVer/ultisnips'
-Plugin 'fatih/vim-go'
+call neobundle#begin(expand('$HOME/.config/nvim/bundle'))  
+NeoBundleFetch 'Shougo/neobundle.vim'
 
+
+" ------------------------------------
+" THIS IS WHERE YOUR PLUGINS WILL COME
+" ------------------------------------
+
+NeoBundle 'fatih/vim-go'
+NeoBundle 'flazz/vim-colorschemes'
+NeoBundle 'Raimondi/delimitMate'
+NeoBundle 'ctrlpvim/ctrlp.vim'
+NeoBundle 'rhysd/vim-clang-format'
+
+call neobundle#end()  
 filetype plugin indent on
 
-" Manage Searches
+" If there are uninstalled bundles found on startup,
+" this will conveniently prompt you to install them.
+NeoBundleCheck  
+"End NeoBundle Scripts-------------------------
+
+" Clipboard 
+set clipboard=unnamed
+
+set termguicolors
+set background=dark
+colorscheme badwolf 
+set autoindent
+set number
+set showmatch
 set ignorecase
 set smartcase
-set incsearch
-set hlsearch
+set tabstop=4
+set shiftwidth=4
+set expandtab
+filetype plugin indent on
+syntax off
+set relativenumber
+"This unsets the "last search pattern" register by hitting return
+nnoremap <CR> :noh<CR><CR>
 
-" The rest of your config follows here
+" set relative line numbers in normal mode only.
+" autocmd InsertEnter * :set number
+" autocmd InsertLeave * :set relativenumber
 
-let g:airline#extensions#tabline#enabled = 1
-set laststatus=2
+:hi Search cterm=NONE ctermfg=black ctermbg=yellow
 
-set t_Co=256
-set background=dark
-colorscheme mustang 
-
-"Monokai settings
-let g:molokai_original = 1
-let g:rehash256 = 1
-
-"Ultisnips settings
-let g:UltiSnipsExpandTrigger="<c-e>"
-let g:UltiSnipsJumpForwardTrigger="<c-b>"
-let g:UltiSnipsJumpBackwardTrigger="<c-z>"
-
-"Vim-Go settings
-let g:go_highlight_functions = 1
-let g:go_highlight_methods = 1
-let g:go_highlight_structs = 1
-let g:go_highlight_operators = 1
-let g:go_highlight_build_constraints = 1
-let g:go_fmt_command = "goimports"
+" Vim-Go Settings
 au FileType go nmap <leader>r <Plug>(go-run)
 au FileType go nmap <leader>b <Plug>(go-build)
 au FileType go nmap <leader>t <Plug>(go-test)
 au FileType go nmap <leader>c <Plug>(go-coverage)
+au FileType go nmap <Leader>s <Plug>(go-implements)
+au FileType go nmap <Leader>gd <Plug>(go-doc)
+au FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
 
-map <F2> :NERDTreeToggle<CR>
-map <F4> :TagbarToggle<CR>
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_fields = 1
+let g:go_highlight_types = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_build_constraints = 1
 
-syntax enable
+let g:go_fmt_command = "goimports"
 
-set number
+" clang-format settings
+"--------------------------------------------------"
+let g:clang_format#auto_format = 1
+let g:clang_format#code_style = "google"
+"--------------------------------------------------"
 
-set ts=4
 
-set autoindent
-
-set expandtab
-
-set shiftwidth=4
-
-set showmatch
-" If you prefer the Omni-Completion tip window to close when a selection is
-" made, these lines close it on movement in insert mode or when leaving
-" insert mode
-autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
-autocmd InsertLeave * if pumvisible() == 0|pclose|endif
-
-" Highlight current line
-:set cursorline
-:hi CursorLine   term=bold cterm=NONE guibg=Grey40 guifg=white
-:hi CursorColumn term=bold cterm=NONE guibg=Grey40 guifg=white
-:nnoremap <Leader>c :set cursorline! cursorcolumn!<CR>
+" delimitMate settings
+let delimitMate_expand_cr=1
