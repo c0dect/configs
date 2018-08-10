@@ -27,6 +27,8 @@ NeoBundle 'flazz/vim-colorschemes'
 NeoBundle 'Raimondi/delimitMate'
 NeoBundle 'ctrlpvim/ctrlp.vim'
 NeoBundle 'rhysd/vim-clang-format'
+NeoBundle 'avakhov/vim-yaml'
+NeoBundle 'tpope/vim-fugitive'
 
 call neobundle#end()  
 filetype plugin indent on
@@ -41,7 +43,7 @@ set clipboard=unnamed
 
 set termguicolors
 set background=dark
-colorscheme badwolf 
+colorscheme mustang 
 set autoindent
 set number
 set showmatch
@@ -59,6 +61,9 @@ nnoremap <CR> :noh<CR><CR>
 " set relative line numbers in normal mode only.
 " autocmd InsertEnter * :set number
 " autocmd InsertLeave * :set relativenumber
+
+" enable syntax highlighting for git.
+autocmd FileType gitcommit syntax enable
 
 :hi Search cterm=NONE ctermfg=black ctermbg=yellow
 
